@@ -117,7 +117,7 @@
         "method": "POST",
         "content_type": "application/json;charset=utf-8",
         "body": "{\n  \"prompt\":\"{{widgets.gather_prompt.SpeechResult}} \"\n}",
-        "url": "https://call-gpt-7861-dev.twil.io/prompt"
+        "url": "https://call-gpt-0000-dev.twil.io/prompt"
       }
     },
     {
