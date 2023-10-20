@@ -1,0 +1,8 @@
+POST http://localhost:3000/prompt
+Content-Type: application/json
+
+{
+  "prompt": "Give me a random quote"
+}
+
+###

@@ -1,0 +1,163 @@
+{
+  "description": "A New Flow",
+  "states": [
+    {
+      "name": "Trigger",
+      "type": "trigger",
+      "transitions": [
+        {
+          "event": "incomingMessage"
+        },
+        {
+          "next": "say_welcome",
+          "event": "incomingCall"
+        },
+        {
+          "event": "incomingConversationMessage"
+        },
+        {
+          "event": "incomingRequest"
+        },
+        {
+          "event": "incomingParent"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "name": "say_welcome",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "gather_prompt",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 140,
+          "y": 290
+        },
+        "loop": 1,
+        "say": "Welcome to Call GPT! You can start your prompt now"
+      }
+    },
+    {
+      "name": "gather_prompt",
+      "type": "gather-input-on-call",
+      "transitions": [
+        {
+          "next": "say_repeat",
+          "event": "keypress"
+        },
+        {
+          "next": "http_prompt",
+          "event": "speech"
+        },
+        {
+          "next": "say_repeat",
+          "event": "timeout"
+        }
+      ],
+      "properties": {
+        "speech_timeout": "auto",
+        "offset": {
+          "x": 170,
+          "y": 570
+        },
+        "loop": 1,
+        "finish_on_key": "#",
+        "stop_gather": true,
+        "gather_language": "en",
+        "profanity_filter": "true",
+        "timeout": 5
+      }
+    },
+    {
+      "name": "say_repeat",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "gather_prompt",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": -400,
+          "y": 570
+        },
+        "loop": 1,
+        "say": "Please say your prompt."
+      }
+    },
+    {
+      "name": "http_prompt",
+      "type": "make-http-request",
+      "transitions": [
+        {
+          "next": "say_play_3",
+          "event": "success"
+        },
+        {
+          "next": "say_error",
+          "event": "failed"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 320,
+          "y": 850
+        },
+        "method": "POST",
+        "content_type": "application/json;charset=utf-8",
+        "body": "{\n  \"prompt\":\"{{widgets.gather_prompt.SpeechResult}} \"\n}",
+        "url": "https://call-gpt-7861-dev.twil.io/prompt"
+      }
+    },
+    {
+      "name": "say_play_3",
+      "type": "say-play",
+      "transitions": [
+        {
+          "next": "gather_prompt",
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 50,
+          "y": 1080
+        },
+        "loop": 1,
+        "say": "{{widgets.http_prompt.parsed.response}}"
+      }
+    },
+    {
+      "name": "say_error",
+      "type": "say-play",
+      "transitions": [
+        {
+          "event": "audioComplete"
+        }
+      ],
+      "properties": {
+        "offset": {
+          "x": 540,
+          "y": 1060
+        },
+        "loop": 1,
+        "say": "We are sorry, but an error occurred while processing your request. The call will be ended."
+      }
+    }
+  ],
+  "initial_state": "Trigger",
+  "flags": {
+    "allow_concurrent_calls": true
+  }
+}
