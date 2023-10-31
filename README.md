@@ -2,7 +2,7 @@
 
 ## Project summary
 
-This project is part of the blogpost published [here.](https://www.twilio.com/blog/)
+This project is part of the blogpost published [here.](https://www.twilio.com/blog/call-gpt-twilio)
 
 ## Developer environment setup
 Make sure you have the software you need:
@@ -21,10 +21,11 @@ OPENAI_API_KEY=<OpenAI API key>
 
 ## Available scripts
 `npm run start` - starts project locally
+
 `npm run deploy` - deploys project to Twilio Functions using credentials from .env file
 
 ## Tutorial
-The blogpost with tutorial for this project you will find [here.](https://www.twilio.com/blog/)
+The blogpost with tutorial for this project you will find [here.](https://www.twilio.com/blog/call-gpt-twilio)
 
 ## Disclaimer
 The project published as-is as sample code.
